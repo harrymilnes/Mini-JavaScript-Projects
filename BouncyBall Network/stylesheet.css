@@ -1,0 +1,8 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#bouncyBall {
+    background: #927bbe;
+}
