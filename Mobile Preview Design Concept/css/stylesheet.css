@@ -1,0 +1,124 @@
+body {
+  background: #319b94;
+}
+section {
+  overflow: hidden;
+  padding: 40px 0 10px 0;
+}
+section ul {
+  list-style: none;
+  color: white;
+}
+.section-inner {
+  max-width: 1400px;
+  margin: auto;
+}
+.feature-preview {
+  padding: 15px;
+  opacity: 0.5;
+  transition: opacity 1s ease;
+  width: 600px;
+  position: relative;
+}
+.feature-preview span {
+  background: #319b94;
+  border-radius: 50%;
+  padding: 0px 13px 2px 13px;
+  font-size: 26px;
+  border: 1px solid white;
+  color: white;
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  left: 10px;
+}
+.feature-preview h3 {
+  margin-top: 5px;
+}
+.feature-preview h3,
+.feature-preview p {
+  margin-left: 60px;
+  transition: margin 1s ease;
+}
+.device-holder {
+  background: url(https://i6.imgpile.com/i/erZ5h.png) no-repeat;
+  position: absolute;
+  left: 75%;
+  top: 60px;
+  overflow: hidden;
+  background-size: contain;
+  visibility: hidden;
+  width: 200px;
+}
+.device-holder .device-holder-inner {
+  position: relative;
+  top: 47px;
+  left: 30px;
+  overflow: hidden;
+  width: 159px;
+  height: 394px;
+}
+.device-holder .device-holder-inner img {
+  left: 0;
+  position: relative;
+  width: 100%;
+}
+.feature-list {
+  margin-left: 10%;
+}
+.feature-item.selected .feature-preview {
+  opacity: 1;
+  background: rgba(142, 196, 193, 0.3);
+  border-radius: 5px;
+}
+.feature-item.selected .feature-preview h3,
+.feature-item.selected .feature-preview p {
+  margin-left: 70px;
+}
+.feature-item.selected .device-holder,
+.feature-item.selected .device-holder > img {
+  visibility: visible;
+}
+.device-preview-animating > img {
+  z-index: 999;
+  visibility: visible;
+}
+@keyframes device-preview-slideout {
+  to {
+    left: 400px;
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+.device-preview-animating img {
+  animation: device-preview-slideout 0.7s normal;
+}
+@media screen and (max-width: 991px) {
+  .feature-list {
+    margin-left: 0;
+    margin-right: 20px;
+    padding-top: 0;
+    padding-left: 20px;
+  }
+}
+@media screen and (max-width: 867px) {
+  .device-holder {
+    visibility: visible;
+    position: initial;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .feature-preview {
+    margin: auto;
+    opacity: 1;
+    background: rgba(142, 196, 193, 0.3);
+    border-radius: 5px;
+    width: auto;
+  }
+  .feature-item.selected .feature-preview h3,
+  .feature-item.selected .feature-preview p {
+    transition: inital;
+    margin-left: 60px;
+  }
+}
