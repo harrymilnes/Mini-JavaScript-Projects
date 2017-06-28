@@ -156,7 +156,7 @@ GameCore.prototype.checkPaddles = function(puck, leftPaddle, rightPaddle)
 GameCore.prototype.IncrementScore = function(paddle)
 {
     paddle.score++;
-    if(paddle.score == 1)
+    if(paddle.score == 10)
         this.drawSplashScreen(paddle);
 }
 
