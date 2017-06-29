@@ -42,14 +42,12 @@ GameCore.prototype.update = function()
 {
     if(!this.splashScreenIsVisible)
     {
-        this.ctx.save();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawBoard();
         puck.update();
         leftPaddle.update();
         rightPaddle.update();
         this.checkPaddles(puck, leftPaddle, rightPaddle);
-        this.ctx.restore();
     }
 
     requestAnimFrame(this.update.bind(gameCore));
