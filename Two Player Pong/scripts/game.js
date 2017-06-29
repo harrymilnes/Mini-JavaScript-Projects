@@ -93,7 +93,7 @@ GameCore.prototype.drawSplashScreen = function(paddle)
 
     if(paddle != null)
     {
-        var victoryString = (paddle.isRightPaddle) ? "Player one wins!" : "Player two wins!";
+        var victoryString = (!paddle.isRightPaddle) ? "Player one wins!" : "Player two wins!";
         this.ctx.fillText(victoryString, 300, 300); 
     }
 
