@@ -1,24 +1,24 @@
-var canvasAnimationRequest, ballCanvas;
+var ballCanvas;
 
 window.onload = function()
 {
-    ballCanvas = new ballCanvas();
+    ballCanvas = new Canvas();
     ballCanvas.redraw(window.innerWidth, window.innerHeight);
+    ballCanvas.animate();
 };
 
-function ballCanvas() 
+function Canvas() 
 {
     this.bouncyBallList = [];
     this.canvas = document.getElementById("bouncyBall");
     this.ctx = this.canvas.getContext("2d");
-    canvasAnimationRequest = requestAnimFrame(this.animate.bind(this));
 }
 
-ballCanvas.prototype.density = function(){
+Canvas.prototype.density = function(){
     return Math.sqrt((this.canvas.height, this.canvas.width) * 3);
 }
 
-ballCanvas.prototype.redraw = function(width, height)
+Canvas.prototype.redraw = function(width, height)
 {
     this.bouncyBallList = [];
     this.canvas.width = width;
@@ -26,13 +26,13 @@ ballCanvas.prototype.redraw = function(width, height)
     spawnBalls();
 }
 
-ballCanvas.prototype.animate = function()
+Canvas.prototype.animate = function()
 {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ballCanvas.bouncyBallList.forEach(function(ball) {
         ball.update();
     });
-    canvasAnimationRequest = requestAnimFrame(this.animate.bind(this));
+    requestAnimFrame(this.animate.bind(this));
 }
 
 bouncyBall.prototype.seekLines = function(){
@@ -49,7 +49,7 @@ bouncyBall.prototype.seekLines = function(){
     }
 }
 
-ballCanvas.prototype.drawLine = function(startX, startY, endX, endY, distance) 
+Canvas.prototype.drawLine = function(startX, startY, endX, endY, distance) 
 {
     distance = ((1.0 / distance) * 20).toFixed(2);
     this.ctx.beginPath();
@@ -60,7 +60,7 @@ ballCanvas.prototype.drawLine = function(startX, startY, endX, endY, distance)
     this.ctx.stroke();
 }
 
-ballCanvas.prototype.drawBall = function(ball){
+Canvas.prototype.drawBall = function(ball){
     this.ctx.beginPath();
     this.ctx.arc(ball.spawnX, ball.spawnY, ball.size, 0, 2 * Math.PI);
     this.ctx.fillStyle = "rgb(215, 215, 215)";

@@ -56,7 +56,6 @@ GameCore.prototype.update = function()
 
 GameCore.prototype.trackControls = function()
 {
-    console.log(gameKeysHeld);
     if (gameKeysHeld["w"]) {
         leftPaddle.move(GameDirection.UP);
     }
