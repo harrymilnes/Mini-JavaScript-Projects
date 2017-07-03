@@ -1,0 +1,16 @@
+.langtonsant-container{
+    width: auto;
+    margin: auto;
+}
+
+#langtonsant-board{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid black;
+}
+
+.langtonsant-container, #langtonsant-board{
+    width: 800px;
+    height: 800px;
+}
