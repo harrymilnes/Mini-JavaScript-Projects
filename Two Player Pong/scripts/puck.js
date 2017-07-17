@@ -26,7 +26,7 @@ Puck.prototype.checkBoundary = function()
 Puck.prototype.serve = function(direction)
 {
     this.xPos = gameCore.ctx.width/2 - this.size/2;
-
+    this.ballSpeedConst = 5;
     if(direction == null)
         direction = (generateRandomBit()) ? GameDirection.LEFT : GameDirection.RIGHT;
 
