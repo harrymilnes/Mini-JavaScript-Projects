@@ -120,7 +120,7 @@ GameCore.prototype.checkPaddles = function(puck, leftPaddle, rightPaddle)
 {
     if ((puck.yPos > rightPaddle.yPos) && (puck.yPos < rightPaddle.yPos + rightPaddle.height)) 
     {
-        if((puck.xPos + puck.size*2) > rightPaddle.xPos + rightPaddle.width)
+        if((puck.xPos > rightPaddle.xPos - rightPaddle.width) && (puck.xPos < rightPaddle.xPos + rightPaddle.width))
         {
             var intersectionNormalization = (((rightPaddle.yPos + (rightPaddle.height/2)) - puck.yPos) / (rightPaddle.height/2));
             puck.ballSpeedConst += 0.5;
@@ -136,7 +136,7 @@ GameCore.prototype.checkPaddles = function(puck, leftPaddle, rightPaddle)
 
     if ((puck.yPos > leftPaddle.yPos) && (puck.yPos < leftPaddle.yPos + leftPaddle.height)) 
     {
-        if(puck.xPos - puck.size < leftPaddle.xPos) 
+        if((puck.xPos < leftPaddle.xPos + leftPaddle.width) && (puck.xPos > leftPaddle.xPos - leftPaddle.width))
         {
             var intersectionNormalization = (((leftPaddle.yPos + (leftPaddle.height/2)) - puck.yPos) / (leftPaddle.height/2)) *-1;
             puck.ballSpeedConst += 0.5;
