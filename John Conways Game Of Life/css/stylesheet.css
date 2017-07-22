@@ -1,0 +1,16 @@
+.gameoflife-container{
+    position: relative;
+    margin: auto;
+}
+
+#gameoflife
+{
+    background: white;
+    position: absolute;  
+    border: 1px solid black;              
+}
+
+.gameoflife-container, #gameoflife{
+    height: 500px;
+    width: 500px;
+}
