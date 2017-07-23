@@ -10,21 +10,5 @@ body{
 
 #gameoflife
 {
-    background: white;
-}
-
-.gameoflife-stats{
-    background: white;
-    width: 400px;
-    top: 10px;
-    left: 10px;
-    position: absolute;
-}
-
-.gameoflife-stats > p{
-    display: inline-block;
-    text-decoration: underline;
-    width: 50%;
-    padding: 0;
-    margin: 0;
+    background: #1B2845;
 }

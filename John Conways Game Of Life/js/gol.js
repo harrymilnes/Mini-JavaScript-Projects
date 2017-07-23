@@ -4,10 +4,17 @@ window.onload = function()
     game = new Game();
 }
 
-var CellStatus = {
+var CellStatus = 
+{
     PASSEDLIFE: 0,
     DEAD: 1,
     ALIVE: 2,
+}
+
+var CellColours = {
+    PASSEDLIFE: "#274060",
+    DEAD: "#1B2845",
+    ALIVE: "#5CA0E8", 
 }
 
 function Game()
@@ -20,8 +27,6 @@ function Game()
     self.canvas.width = window.innerWidth;
     self.canvas.height = window.innerHeight;
     self.CellSize = 4;
-    self.GenerationCounter = 0;
-    self.AliveCellCounter = 0;
     self.IsPaused = false;
     self.IsDrawing = false;
     self.ColumnCount = Math.floor(canvasElement.clientWidth / self.CellSize);
@@ -61,10 +66,9 @@ Game.prototype.setupWorld = function()
         }
     }
 
+    self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
     self.IsPaused = true;
     self.update();
-    self.resetGenerationCounter();
-    self.resetAliveCellCounter();
 }
 
 Game.prototype.drawCells = function (event)
@@ -95,7 +99,6 @@ Game.prototype.updateWorld = function()
         }
     }
 
-    this.resetAliveCellCounter();
     for(let c = 0; c < self.ColumnCount; c++)
     {
         for(let r = 0; r < self.RowCount; r++)
@@ -116,13 +119,11 @@ Game.prototype.updateWorld = function()
             else if(neighbours == 3 || (self.world[c][r] == CellStatus.ALIVE && neighbours == 2))
             {
                 nextGeneration[c][r] = CellStatus.ALIVE;
-                this.increaseAliveCellCounter();
             }
 
         }
     }
 
-    this.increaseGenerationCounter();
     return this.world = nextGeneration;
 }
 
@@ -163,37 +164,17 @@ Game.prototype.update = function()
         {
             if(self.world[c][r] == CellStatus.ALIVE)
             {
-                self.ctx.fillStyle = "black";
+                self.ctx.fillStyle = CellColours.ALIVE;
                 self.ctx.fillRect(c * self.CellSize, r *self.CellSize, self.CellSize, self.CellSize);
             }
-            else if(self.world[c][r] == CellStatus.PASSEDLIFE)
+            else if (self.world[c][r] == CellStatus.PASSEDLIFE)
             {
-                self.ctx.fillStyle = "red";
+                self.ctx.fillStyle = CellColours.PASSEDLIFE;
                 self.ctx.fillRect(c * self.CellSize, r *self.CellSize, self.CellSize, self.CellSize);
             }
         }
     }
     requestAnimFrame(this.update.bind(this));
-}
-
-Game.prototype.resetGenerationCounter = function(){
-    this.AliveCellCounter = 0;
-    document.getElementById("gol-alivecellcounter").innerText = this.AliveCellCounter;
-}
-
-Game.prototype.increaseGenerationCounter = function(){
-    this.GenerationCounter++;
-    document.getElementById("gol-generationcounter").innerText = this.GenerationCounter;
-}
-
-Game.prototype.resetAliveCellCounter = function(){
-    this.AliveCellCounter = 0;
-    document.getElementById("gol-alivecellcounter").innerText = this.AliveCellCounter;
-}
-
-Game.prototype.increaseAliveCellCounter = function(){
-    this.AliveCellCounter++;
-    document.getElementById("gol-alivecellcounter").innerText = this.AliveCellCounter;
 }
 
 Game.prototype.generateRandomWorld = function(){
