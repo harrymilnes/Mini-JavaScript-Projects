@@ -12,9 +12,9 @@ var CellStatus =
 }
 
 var CellColours = {
-    PASSEDLIFE: "#274060",
-    DEAD: "#1B2845",
-    ALIVE: "#5CA0E8", 
+    PASSEDLIFE: "#1F487E",
+    DEAD: "#1D3461",
+    ALIVE: "#6290C8", 
 }
 
 function Game()
@@ -33,7 +33,9 @@ function Game()
     self.RowCount = Math.floor(canvasElement.clientHeight  / self.CellSize);
     self.RandomCellCount = Math.floor(self.ColumnCount * self.RowCount / self.CellSize /2);
     self.world = [];
+
     self.setupWorld();
+    self.generateRandomWorld();
 
     self.canvas.addEventListener("mousedown", function( event ) {
         self.IsDrawing = true;
@@ -49,6 +51,8 @@ function Game()
     self.canvas.addEventListener("mouseup", function( event ) {
         self.IsDrawing = false;
     }, false);
+
+    self.IsPaused = false;
 }
 
 Game.prototype.setupWorld = function()
@@ -172,17 +176,35 @@ Game.prototype.update = function()
                 self.ctx.fillStyle = CellColours.PASSEDLIFE;
                 self.ctx.fillRect(c * self.CellSize, r *self.CellSize, self.CellSize, self.CellSize);
             }
+
         }
     }
     requestAnimFrame(this.update.bind(this));
 }
 
-Game.prototype.generateRandomWorld = function(){
-    var self = this;
-    self.setupWorld();
-    for (let r = 0; r < this.RandomCellCount; r++) {
-        var colIndex = Math.floor(Math.random() * this.ColumnCount);
-        var rowIndex = Math.floor(Math.random() * this.RowCount);
+Game.prototype.resetWorld = function()
+{
+    let self = this;
+    self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
+
+    for(let c = 0; c < self.ColumnCount; c++)
+    {
+        for(let r = 0; r < self.RowCount; r++)
+        {
+            self.world[c][r] = CellStatus.DEAD;
+        }
+    }
+}
+
+Game.prototype.generateRandomWorld = function()
+{
+    let self = this;
+    self.resetWorld();
+
+    for (let r = 0; r < this.RandomCellCount; r++) 
+        {
+        let colIndex = Math.floor(Math.random() * this.ColumnCount);
+        let rowIndex = Math.floor(Math.random() * this.RowCount);
         self.world[colIndex][rowIndex] = CellStatus.ALIVE;
     }
 }
@@ -193,7 +215,7 @@ window.addEventListener("keydown", function(event)
         game.IsPaused = !game.IsPaused;
 
     if(event.key == ["Delete"])
-        game.setupWorld();
+        game.resetWorld();
 
     if(event.key == ["r"])
         game.generateRandomWorld();
