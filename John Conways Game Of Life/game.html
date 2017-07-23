@@ -4,13 +4,17 @@
         <meta name="author" content="Harry Milnes">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <link rel="stylesheet" href="css/stylesheet.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     </head>
 
     <body>
         <div class="gameoflife-container">
-            <canvas id="gameoflife"></div>
+            <div class="gameoflife-stats">
+                <p>Generation: <span id="gol-generationcounter">0</span></p>
+                <p>Population: <span id="gol-alivecellcounter">0</span></p>
+            </div> 
+            <canvas id="gameoflife"></canvas>
         </div>
-
         <script type="text/javascript" src="js/gol.js"></script>
     </body>
 </html>

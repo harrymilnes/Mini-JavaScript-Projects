@@ -16,15 +16,15 @@ function Game()
     let canvasElement = document.getElementById("gameoflife");
     self.canvas = canvasElement;
     self.ctx = self.canvas.getContext("2d");
-    self.canvas.width = canvasElement.clientWidth;
-    self.canvas.height = canvasElement.clientHeight;
-    self.CellSize = 3;
+    self.canvas.width = window.innerWidth;
+    self.canvas.height = window.innerHeight;
+    self.CellSize = 4;
     self.GenerationCounter = 0;
     self.AliveCellCounter = 0;
     self.IsPaused = false;
     self.MouseDown = false;
-    self.ColumnCount = Math.floor(canvasElement.clientHeight / self.CellSize);
-    self.RowCount = Math.floor(canvasElement.clientWidth  / self.CellSize);
+    self.ColumnCount = Math.floor(canvasElement.clientWidth / self.CellSize);
+    self.RowCount = Math.floor(canvasElement.clientHeight  / self.CellSize);
 
     self.world = [];
     self.setupWorld();
@@ -73,9 +73,9 @@ Game.prototype.drawCells = function (event)
     if(relativeXPos > 0 && relativeXPos < this.canvas.width 
         && relativeYPos > 0 && relativeYPos < this.canvas.height)
     {
-        let columnIndex = Math.floor(this.RowCount - ((this.canvas.width - relativeXPos) / this.CellSize));
-        let rowIndex = Math.floor(this.ColumnCount - ((this.canvas.height - relativeYPos) / this.CellSize));
-        this.world[columnIndex][rowIndex] = 1;
+        let columnIndex = Math.floor(this.ColumnCount - ((this.canvas.width - relativeXPos) / this.CellSize));
+        let rowIndex = Math.floor(this.RowCount - ((this.canvas.height - relativeYPos) / this.CellSize));
+        this.world[columnIndex][rowIndex] = !this.world[columnIndex][rowIndex];
     }
 }
 
@@ -92,6 +92,7 @@ Game.prototype.updateWorld = function()
         }
     }
 
+    this.resetAliveCellCounter();
     for(let c = 0; c < self.ColumnCount; c++)
     {
         for(let r = 0; r < self.RowCount; r++)
@@ -105,10 +106,12 @@ Game.prototype.updateWorld = function()
             else if(neighbours == 3 || (self.world[c][r] && neighbours == 2))
             {
                 nextGeneration[c][r] = CellStatus.ALIVE;
+                this.increaseAliveCellCounter();
             }
         }
     }
 
+    this.increaseGenerationCounter();
     return this.world = nextGeneration;
 }
 
@@ -160,12 +163,16 @@ Game.prototype.update = function()
 
 Game.prototype.increaseGenerationCounter = function(){
     this.GenerationCounter++;
-    //add element to webpage and increment.
+    document.getElementById("gol-generationcounter").innerText = this.GenerationCounter;
+}
+
+Game.prototype.resetAliveCellCounter = function(){
+    this.AliveCellCounter = 0;
 }
 
 Game.prototype.increaseAliveCellCounter = function(){
     this.AliveCellCounter++;
-    //add element to webpage and increment.
+    document.getElementById("gol-alivecellcounter").innerText = this.AliveCellCounter;
 }
 
 Game.prototype.generateRandomWorld = function(){
