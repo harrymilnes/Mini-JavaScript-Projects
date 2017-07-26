@@ -15,7 +15,7 @@ window.onload = function()
 	var colour = materials_folder.addColor(lorenz, 'colour');
 
 	colour.onChange(function( colour ) {
-		lorenz.line.material.color = new THREE.Color( colour );
+		lorenz.changeMaterial(colour);
 	});
 
 	gui.add(lorenz, 'render');
@@ -23,6 +23,14 @@ window.onload = function()
 
 function Lorenz() 
 {
+  	this.rho = 28.0;
+	this.sigma = 10.0;
+	this.beta = 8.0/3.0;
+	this.time = 0.01;
+	this.maximumPoints = 10000;
+
+	this.colour = "#ffae23";
+  
 	this.webGlRender = new THREE.WebGLRenderer();
 	this.webGlRender.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(this.webGlRender.domElement);
@@ -33,20 +41,13 @@ function Lorenz()
 	this.scene.add(this.camera); 
 
 	this.geometry = new THREE.BufferGeometry();
-	this.geometryPaths = new Float32Array(config.points * 3);
+	this.geometryPaths = new Float32Array(this.maximumPoints * 3);
 	this.geometry.addAttribute('position', new THREE.BufferAttribute(this.geometryPaths, 3 ));
+	
 	this.line = new THREE.Line(this.geometry);
 	this.scene.add(this.line);
 
 	this.controls = new THREE.OrbitControls(this.camera, this.webGlRender.domElement);
-
-	this.rho = 28.0;
-	this.sigma = 10.0;
-	this.beta = 8.0/3.0;
-	this.time = 0.01;
-	this.maximumPoints = 10000;
-
-	this.colour = "#ffae23";
 
 	this.render();
 	this.animate();
@@ -54,7 +55,8 @@ function Lorenz()
 
 Lorenz.prototype.render = function()
 {
-	this.CreateLorenzArraySolution();
+	this.changeMaterial(this.colour);
+	this.createLorenzArraySolution();
 	this.currentPointDrawn = 0;
 	this.geometry.attributes.position.needsUpdate = true;
 }
@@ -66,7 +68,13 @@ Lorenz.prototype.animate = function()
 	requestAnimFrame(this.animate.bind(this));
 }
 
-Lorenz.prototype.CreateLorenzArraySolution = function()
+Lorenz.prototype.changeMaterial = function(colour)
+{
+	colour.replace('#', "0x");
+	this.line.material.color = new THREE.Color(colour);
+}
+
+Lorenz.prototype.createLorenzArraySolution = function()
 {
 	let self = this;
 
