@@ -2,35 +2,41 @@ var lorenz;
 window.onload = function()
 {
 	lorenz = new Lorenz();
-	var gui = new dat.GUI();
 
-	var sys_params_folder = gui.addFolder('System Parameters');
-	sys_params_folder.add(lorenz, 'rho', 0.0, 100.0);
-	sys_params_folder.add(lorenz, 'sigma', 0.0, 100.0);
-	sys_params_folder.add(lorenz, 'beta', 0.0, 100.0);
-	sys_params_folder.add(lorenz, 'time', 0.0, 60.0);
-	sys_params_folder.add(lorenz, 'maximumPoints', 1000, 100000);
+	let gui = new dat.GUI();
 
-	var materials_folder = gui.addFolder('Materials');
-	var colour = materials_folder.addColor(lorenz, 'colour');
+	let colours_folder = gui.addFolder('Colours');
 
-	colour.onChange(function( colour ) {
-		lorenz.changeMaterial(colour);
+	let backgroundColour = colours_folder.addColor(lorenz, 'backgroundColour').name('Background');
+	backgroundColour.onChange(function(hexColour) {
+		lorenz.changeBackgroundColour(hexColour);
 	});
 
-	gui.add(lorenz, 'render');
+	let lineColour = colours_folder.addColor(lorenz, 'lineColour').name('Line');
+	lineColour.onChange(function(hexColour) {
+		lorenz.changeLineColour(hexColour);
+	});
+
+	let sys_params_folder = gui.addFolder('System Parameters');
+	sys_params_folder.add(lorenz, 'rho', 0.0, 100.0).name('Rho');
+	sys_params_folder.add(lorenz, 'sigma', 0.0, 100.0).name('Sigma');
+	sys_params_folder.add(lorenz, 'beta', 0.0, 8.0).name('Beta');
+	sys_params_folder.add(lorenz, 'maximumPoints', 1000, 100000).name('Maximum Points');
+
+	gui.add(lorenz, 'render').name('Render');
 }
 
 function Lorenz() 
 {
   	this.rho = 28.0;
 	this.sigma = 10.0;
-	this.beta = 8.0/3.0;
+	this.beta = 2.6;
 	this.time = 0.01;
 	this.maximumPoints = 10000;
+	
+	this.lineColour = "#2cff00";
+	this.backgroundColour = "#090909";
 
-	this.colour = "#ffae23";
-  
 	this.webGlRender = new THREE.WebGLRenderer();
 	this.webGlRender.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(this.webGlRender.domElement);
@@ -55,7 +61,8 @@ function Lorenz()
 
 Lorenz.prototype.render = function()
 {
-	this.changeMaterial(this.colour);
+	this.changeLineColour(this.lineColour);
+	this.changeBackgroundColour(this.backgroundColour);
 	this.createLorenzArraySolution();
 	this.currentPointDrawn = 0;
 	this.geometry.attributes.position.needsUpdate = true;
@@ -68,7 +75,13 @@ Lorenz.prototype.animate = function()
 	requestAnimFrame(this.animate.bind(this));
 }
 
-Lorenz.prototype.changeMaterial = function(colour)
+Lorenz.prototype.changeBackgroundColour = function(colour)
+{
+	colour.replace('#', "0x");
+	this.webGlRender.setClearColor (new THREE.Color(colour), 1);
+}
+
+Lorenz.prototype.changeLineColour = function(colour)
 {
 	colour.replace('#', "0x");
 	this.line.material.color = new THREE.Color(colour);
