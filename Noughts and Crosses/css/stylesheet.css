@@ -9,12 +9,7 @@ body
     margin-top: 5em;
     width: 16.5em;
 }
-
-#game-mat > div.row{
-    white-space: none;
-}
-
-#game-mat > div.row > div
+#game-mat > div
 {
     float: left;
     width: 1em;
@@ -29,36 +24,16 @@ body
     text-shadow: black 1px 1px 1px;
 }
 
-#game-mat > div.row > div:hover
+#game-mat > div:hover
 {
    cursor: pointer;
    background: #88A0A8;
 }
 
-#game-mat > div.row:nth-child(1) > div
-{
-    border-top: none;
-}
-
-#game-mat > div.row > div:nth-child(1)
-{
-    border-left: none;
-}
-
-#game-mat > div.row:nth-child(3) > div
-{
-    border-bottom: none;
-}
-
-#game-mat > div.row > div:nth-child(3)
-{
-    border-right: none;
-}
-
-#game-mat > div.row > div.cross{
+#game-mat > div.cross{
     color: #F18805;
 }
 
-#game-mat > div.row > div.nought{
+#game-mat  > div.nought{
     color: #5FAD41;
 }
