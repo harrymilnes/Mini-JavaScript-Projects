@@ -1,11 +1,10 @@
-$(function() 
+$()
 {
     let playerModels = 
     {
         NOUGHT: 0,
         CROSS: 1
     };
-
     let currentPlayer = playerModels.NOUGHT;
 
     let winningCombinations = 
@@ -13,11 +12,11 @@ $(function()
         //Horizontal
         [0, 1, 2],
         [3, 4, 5],
-        [2, 5, 8],
+        [6, 7, 8],
         //Verticle
         [0, 3, 6],
         [1, 4, 7],
-        [6, 7, 8],
+        [2, 5, 8],
         //Diaganol
         [0, 4, 8],
         [2, 4, 6]
@@ -26,8 +25,6 @@ $(function()
     let gameBoard = [ "E", "E", "E",
                       "E", "E", "E",
                       "E", "E", "E" ];
-
-    let currentTurnCount = 0;
 
     $("#game-mat > div").click(function() 
     {
@@ -38,37 +35,89 @@ $(function()
         }
         else
         {
-             $(this).addClass("cross").text("X");
+            $(this).addClass("cross").text("X");
             gameBoard[$(this).index()] = "X";
         }
         
-        currentPlayer = !currentPlayer;
-        currentTurnCount ++;
-        GetWinner();
+        GetWinner(gameBoard);
+        AIMove();
     });
 
-    function GetWinner()
+    function GetWinner(board)
     {
-        if(DoesPlayerWin("O"))
+        if(DoesPlayerWin("O", board))
         {
             alert("Nought wins.");
         }
-        else if(DoesPlayerWin("X"))
+        else if(DoesPlayerWin("X", board))
         {
             alert("Cross wins.");
         }
-        else if (currentTurnCount == 9)
+        else if (IsGameDraw(board))
         {
             alert("It's a draw.");
         }
     }
 
-    function IsADraw()
+    function AIMove()
     {
-        return (gameBoard.indexOf("E") === -1);
+        let cell = Minimax(gameBoard, 0, "X");
+        $('#game-mat > div:eq(' + cell + ')').addClass('cross').text("X");
+        gameBoard[cell] = "X";
     }
 
-    function DoesPlayerWin(playerChar)
+    function Minimax(gameBoardCopy, depth, playerChar)
+    {       
+        if(DoesPlayerWin("O", gameBoardCopy))
+        {
+            return depth - 10;
+        }
+        else if(DoesPlayerWin("X", gameBoardCopy))
+        {
+            return 10 - depth;
+        }
+        else if(IsGameDraw(gameBoardCopy))
+        {
+            return 0;
+        }
+        else
+        {
+            let automatedValues = [];
+
+            for(let i = 0; i < gameBoardCopy.length; i++)
+            {
+                let duplicateBoard = _.cloneDeep(gameBoardCopy);
+            
+                if(duplicateBoard[i] != "E")
+                    continue;
+
+                duplicateBoard[i] = playerChar;
+                let recursionVal = Minimax(duplicateBoard, depth+1, (playerChar == "O") ? "X" : "O");
+                automatedValues.push( { risk: recursionVal, cell: i } );
+            }
+
+            let optimalMove;
+            if(playerChar == "O")
+            {
+                optimalMove = _.minBy(automatedValues, (m) => {return m.risk});
+            }
+            else
+            { 
+                optimalMove = _.maxBy(automatedValues, (m) => {return m.risk});
+            }
+
+            if(depth == 0)
+            {
+                return optimalMove.cell;
+            }
+            else
+            {
+                return optimalMove.risk;
+            }
+        }
+    }
+
+    function DoesPlayerWin(playerChar, board)
     {
         let playerWins = false;
         for(let i = 0; i < winningCombinations.length; i++)
@@ -77,7 +126,7 @@ $(function()
 
             for(let j = 0; j < 3; j++)
             {
-                foundValues += (gameBoard[winningCombinations[i][j]] == playerChar)
+                foundValues += (board[winningCombinations[i][j]] == playerChar)
             }
 
             if(foundValues == 3)
@@ -89,4 +138,9 @@ $(function()
 
         return playerWins;
     }
-});
+
+    function IsGameDraw(board)
+    {
+        return board.indexOf("E") === -1;
+    }
+}
