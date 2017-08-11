@@ -6,13 +6,15 @@ $()
         CPUWins: 0
     }
 
-    let playerModels = 
+    let boardMarkers = 
     {
         NOUGHT: 0,
-        CROSS: 1
+        CROSS: 1,
+        EMPTY: 2
     };
 
-    let currentPlayer = playerModels.NOUGHT;
+    let humanPlayer = boardMarkers.NOUGHT;
+    let currentTurn = humanPlayer;
 
     let winningCombinations = 
     [
@@ -29,9 +31,9 @@ $()
         [2, 4, 6]
     ]
     
-    let gameBoard = [ "E", "E", "E",
-                      "E", "E", "E",
-                      "E", "E", "E" ];
+    let gameBoard = [ boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY,
+                      boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY,
+                      boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY ];
 
     $("#game-mat > div").click(function() 
     {
@@ -40,32 +42,26 @@ $()
 
     function MakeMove(cell)
     {
-        if(currentPlayer == playerModels.NOUGHT)
+        if(IsCellEmpty(cell, gameBoard))
         {
-            $("#game-mat > div:eq(" + cell + ")").addClass("nought").text("O");
-            gameBoard[cell] = playerModels.NOUGHT;
-            currentPlayer = !currentPlayer;
-            if(!IsGameOver(gameBoard))
+            $("#game-mat > div:eq(" + cell + ")").text((currentTurn == boardMarkers.CROSS) ? "X" : "O");
+            gameBoard[cell] = currentTurn;
+            currentTurn = !currentTurn;
+            if(!IsGameOver(gameBoard) && currentTurn != humanPlayer)
             {
                 AIMove();
             }
-        }
-        else
-        {
-            $("#game-mat > div:eq(" + cell + ")").addClass("cross").text("X");
-            gameBoard[cell] = playerModels.CROSS;
-            currentPlayer = !currentPlayer;
         }
     }
 
     function IsGameOver(board)
     {
-        if(DoesPlayerWin(playerModels.NOUGHT, board))
+        if(DoesPlayerWin(humanPlayer, board))
         {
             alert("You Win.");
             scoreBoard.PlayerWins++;
         }
-        else if(DoesPlayerWin(playerModels.CROSS, board))
+        else if(DoesPlayerWin(!humanPlayer, board))
         {
             alert("You Lose.");
             scoreBoard.CPUWins++;
@@ -93,16 +89,16 @@ $()
 
     function AIMove()
     {
-        return MakeMove(Minimax(gameBoard, 0, playerModels.CROSS));
+        return MakeMove(Minimax(gameBoard, 0, currentTurn));
     }
 
     function Minimax(gameBoardCopy, depth, player)
     {       
-        if(DoesPlayerWin(playerModels.NOUGHT, gameBoardCopy))
+        if(DoesPlayerWin(humanPlayer, gameBoardCopy))
         {
             return depth - 10;
         }
-        else if(DoesPlayerWin(playerModels.CROSS, gameBoardCopy))
+        else if(DoesPlayerWin(!humanPlayer, gameBoardCopy))
         {
             return 10 - depth;
         }
@@ -118,15 +114,15 @@ $()
             {
                 let duplicateBoard = _.cloneDeep(gameBoardCopy);
             
-                if(duplicateBoard[i] != "E")
+                if(!IsCellEmpty(i, duplicateBoard))
                     continue;
 
                 duplicateBoard[i] = player;
-                let recursionVal = Minimax(duplicateBoard, depth+1, (player == playerModels.NOUGHT) ? playerModels.CROSS : playerModels.NOUGHT);
+                let recursionVal = Minimax(duplicateBoard, depth+1, !player);
                 automatedValues.push( { risk: recursionVal, cell: i } );
             }
 
-            let optimalMove = (player == playerModels.NOUGHT) ? _.minBy(automatedValues, (m) => {return m.risk}) :  _.maxBy(automatedValues, (m) => {return m.risk});
+            let optimalMove = (player != humanPlayer) ?  _.maxBy(automatedValues, (m) => {return m.risk}) : _.minBy(automatedValues, (m) => {return m.risk});
             if(depth == 0)
             {
                 return optimalMove.cell;
@@ -162,6 +158,19 @@ $()
 
     function IsGameDraw(board)
     {
-        return board.indexOf("E") === -1;
+        return board.indexOf(boardMarkers.EMPTY) === -1;
+    }
+
+    function IsCellEmpty(cell, board)
+    {
+        return board[cell] === boardMarkers.EMPTY;
+    }
+
+    function ResetGameBoard()
+    {
+        for(let c = 0; c < gameBoard.length; c++)
+        {
+            gameBoard[c] = boardMarkers.EMPTY;
+        }
     }
 }
