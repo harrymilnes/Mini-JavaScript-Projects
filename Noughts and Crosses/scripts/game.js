@@ -1,10 +1,17 @@
 $()
 {
+    let scoreBoard = {
+        PlayerWins: 0,
+        Draws: 0,
+        CPUWins: 0
+    }
+
     let playerModels = 
     {
         NOUGHT: 0,
         CROSS: 1
     };
+
     let currentPlayer = playerModels.NOUGHT;
 
     let winningCombinations = 
@@ -28,51 +35,74 @@ $()
 
     $("#game-mat > div").click(function() 
     {
+       MakeMove($(this).index());
+    });
+
+    function MakeMove(cell)
+    {
         if(currentPlayer == playerModels.NOUGHT)
         {
-            $(this).addClass("nought").text("O");
-            gameBoard[$(this).index()] = "O";
+            $("#game-mat > div:eq(" + cell + ")").addClass("nought").text("O");
+            gameBoard[cell] = playerModels.NOUGHT;
+            currentPlayer = !currentPlayer;
+            if(!IsGameOver(gameBoard))
+            {
+                AIMove();
+            }
         }
         else
         {
-            $(this).addClass("cross").text("X");
-            gameBoard[$(this).index()] = "X";
+            $("#game-mat > div:eq(" + cell + ")").addClass("cross").text("X");
+            gameBoard[cell] = playerModels.CROSS;
+            currentPlayer = !currentPlayer;
         }
-        
-        GetWinner(gameBoard);
-        AIMove();
-    });
+    }
 
-    function GetWinner(board)
+    function IsGameOver(board)
     {
-        if(DoesPlayerWin("O", board))
+        if(DoesPlayerWin(playerModels.NOUGHT, board))
         {
-            alert("Nought wins.");
+            alert("You Win.");
+            scoreBoard.PlayerWins++;
         }
-        else if(DoesPlayerWin("X", board))
+        else if(DoesPlayerWin(playerModels.CROSS, board))
         {
-            alert("Cross wins.");
+            alert("You Lose.");
+            scoreBoard.CPUWins++;
         }
         else if (IsGameDraw(board))
         {
             alert("It's a draw.");
+            scoreBoard.Draws++;
         }
+        else
+        {
+            return false;
+        }
+
+        UpdateScoreUI();
+        return true;
+    }
+
+    function UpdateScoreUI()
+    {
+        $('#player-wins').text(scoreBoard.PlayerWins);
+        $('#draws').text(scoreBoard.Draws);
+        $('#cpu-wins').text(scoreBoard.CPUWins);
     }
 
     function AIMove()
     {
-        let cell = Minimax(gameBoard, 0, "X");
-        $('#game-mat > div:eq(' + cell + ')').addClass('cross').text("X");
-        gameBoard[cell] = "X";
+        return MakeMove(Minimax(gameBoard, 0, playerModels.CROSS));
     }
 
-    function Minimax(gameBoardCopy, depth, playerChar)
+    function Minimax(gameBoardCopy, depth, player)
     {       
-        if(DoesPlayerWin("O", gameBoardCopy))
+        if(DoesPlayerWin(playerModels.NOUGHT, gameBoardCopy))
         {
             return depth - 10;
         }
-        else if(DoesPlayerWin("X", gameBoardCopy))
+        else if(DoesPlayerWin(playerModels.CROSS, gameBoardCopy))
         {
             return 10 - depth;
         }
@@ -91,21 +121,12 @@ $()
                 if(duplicateBoard[i] != "E")
                     continue;
 
-                duplicateBoard[i] = playerChar;
-                let recursionVal = Minimax(duplicateBoard, depth+1, (playerChar == "O") ? "X" : "O");
+                duplicateBoard[i] = player;
+                let recursionVal = Minimax(duplicateBoard, depth+1, (player == playerModels.NOUGHT) ? playerModels.CROSS : playerModels.NOUGHT);
                 automatedValues.push( { risk: recursionVal, cell: i } );
             }
 
-            let optimalMove;
-            if(playerChar == "O")
-            {
-                optimalMove = _.minBy(automatedValues, (m) => {return m.risk});
-            }
-            else
-            { 
-                optimalMove = _.maxBy(automatedValues, (m) => {return m.risk});
-            }
-
+            let optimalMove = (player == playerModels.NOUGHT) ? _.minBy(automatedValues, (m) => {return m.risk}) :  _.maxBy(automatedValues, (m) => {return m.risk});
             if(depth == 0)
             {
                 return optimalMove.cell;
@@ -117,7 +138,7 @@ $()
         }
     }
 
-    function DoesPlayerWin(playerChar, board)
+    function DoesPlayerWin(player, board)
     {
         let playerWins = false;
         for(let i = 0; i < winningCombinations.length; i++)
@@ -126,7 +147,7 @@ $()
 
             for(let j = 0; j < 3; j++)
             {
-                foundValues += (board[winningCombinations[i][j]] == playerChar)
+                foundValues += (board[winningCombinations[i][j]] == player)
             }
 
             if(foundValues == 3)
