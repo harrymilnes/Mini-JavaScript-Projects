@@ -20,8 +20,6 @@ body
     text-align: center;
     line-height: 1em;
     font-size: 5.5em;
-    font-family: 'Permanent Marker', cursive;
-    text-shadow: black 1px 1px 1px;
 }
 
 #game-mat > div:hover
@@ -30,10 +28,39 @@ body
    background: #88A0A8;
 }
 
-#game-mat > div.cross{
-    color: #F18805;
+#game-mat > div > div{
+
+    position: relative;
 }
 
-#game-mat  > div.nought{
-    color: #5FAD41;
+#game-mat div.nought{
+    width: 75%;
+    height: 75%;
+    border: 5px solid white;
+    border-radius: 50%;
+    top: 7%;
+    left: 7%;
+}
+
+#game-mat div.cross{
+    top: 48%;
+    left: 5%;
+    width: 100%;
+}
+
+#game-mat div.cross:before{
+    transform: rotate(-45deg);
+}
+
+#game-mat div.cross:after{
+    transform: rotate(45deg);
+}
+
+#game-mat div.cross:before, #game-mat div.cross:after{
+    display: block;
+    left: -10%;
+    position: absolute;
+    width: 100%;
+    border: 3px solid white;
+    content: "";
 }

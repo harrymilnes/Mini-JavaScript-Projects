@@ -44,7 +44,8 @@ $()
     {
         if(IsCellEmpty(cell, gameBoard))
         {
-            $("#game-mat > div:eq(" + cell + ")").text((currentTurn == boardMarkers.CROSS) ? "X" : "O");
+            var moveMarkerClass = (currentTurn == boardMarkers.NOUGHT) ? "nought" : "cross"; 
+            $("#game-mat > div:eq(" + cell + ")").append("<div class=" + moveMarkerClass  + "></div");
             gameBoard[cell] = currentTurn;
             currentTurn = !currentTurn;
             if(!IsGameOver(gameBoard) && currentTurn != humanPlayer)
