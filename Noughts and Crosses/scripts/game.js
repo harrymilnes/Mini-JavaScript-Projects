@@ -35,7 +35,7 @@ $()
                       boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY,
                       boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY ];
 
-    $("#game-mat > div").click(function() 
+    $("#game-mat > div").on('click touch', function() 
     {
        MakeMove($(this).index());
     });
