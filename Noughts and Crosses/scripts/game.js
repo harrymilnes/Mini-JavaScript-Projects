@@ -12,15 +12,15 @@ $()
         CROSS: 1,
         EMPTY: 2
     };
+    let humanPlayer;
+    let currentTurn;
 
     let difficultyLevels = {
         BEATABLE: 3,
         IMPOSSIBLE: Infinity
     }
-    let currentDifficulty = difficultyLevels.IMPOSSIBLE;
+    let currentDifficulty;
 
-    let humanPlayer = boardMarkers.NOUGHT;
-    let currentTurn = humanPlayer;
 
     let winningCombinations = 
     [
@@ -104,7 +104,6 @@ $()
         else
         {
             let automatedValues = [];
-
             for(let i = 0; i < gameBoardCopy.length; i++)
             {
                 let duplicateBoard = _.cloneDeep(gameBoardCopy);
@@ -187,17 +186,11 @@ $()
        MakeMove($(this).index());
     });
 
-    $("#spawn-nought").on('click touch', function() 
+    $("#menu .menu-button").on('click touch', function() 
     {
-        humanPlayer = boardMarkers.NOUGHT;
+        humanPlayer = $(this).attr('id') == "spawn-nought" ? boardMarkers.NOUGHT : boardMarkers.CROSS;
         currentTurn = humanPlayer;
-        HideUI();
-    });
-
-    $("#spawn-cross").on('click touch', function() 
-    {
-        humanPlayer = boardMarkers.CROSS;
-        currentTurn = humanPlayer;
+        currentDifficulty = ($("#spawn-difficulty").is(':checked')) ? difficultyLevels.IMPOSSIBLE : difficultyLevels.BEATABLE;
         HideUI();
     });
 }

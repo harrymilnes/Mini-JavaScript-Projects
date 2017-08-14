@@ -121,7 +121,6 @@ div.cross:before, div.cross:after{
 #menu
 {
     width: 300px;
-    height: 150px;
     background: hsla(195, 15%, 41%, 0.8);
     z-index: 2;
     text-align: center;
@@ -139,6 +138,16 @@ div.cross:before, div.cross:after{
     margin-left: 20px;
     margin-right: 20px;
     cursor: pointer;
+}
+
+#menu input[type="checkbox"]
+{
+    width: 25px;
+    height: 25px;
+}
+
+#menu label{
+    font-size: 35px;
 }
 
 #menu div.nought, #menu div.cross{
