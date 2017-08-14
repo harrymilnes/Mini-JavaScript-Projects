@@ -1,31 +1,45 @@
 body
 {
     background: #546A76;
+    margin: 0;
 }
 
 #game-mat
 {
     margin: auto;
     margin-top: 5em;
-    width: 16.5em;
+    width: 270px;
 }
+
 #game-mat > div
 {
     float: left;
-    width: 1em;
-    height: 1em;
-    border: 1px solid #88A0A8;
+    border: 1px solid #546A76;
+    background: #88A0A8;
     box-sizing: border-box;
+    width: 90px;
+    height: 90px;
 
-    text-align: center;
-    line-height: 1em;
-    font-size: 5.5em;
+    -webkit-transition: background 500ms ease-in;
+    -ms-transition: background 500ms ease-in;
+    -o-transition: background 500ms ease-in;
+    transition: background 500ms ease-in;
+
+    -webkit-transition: border 1s ease-in;
+    -moz-transition: border 1s ease-in;
+    -o-transition: border 1s ease-in;
+    transition: border 1s ease-in;
 }
 
 #game-mat > div:hover
 {
    cursor: pointer;
-   background: #88A0A8;
+   background: #789098;
+}
+
+#game-mat > div:active
+{
+   background: #587078;
 }
 
 #game-mat > div > div{
@@ -33,34 +47,81 @@ body
     position: relative;
 }
 
-#game-mat div.nought{
-    width: 75%;
-    height: 75%;
+#game-mat div.nought, #game-mat div.cross
+{
+    -webkit-animation: fadein 1s; 
+    -moz-animation: fadein 1s; 
+    -ms-animation: fadein 1s; 
+    -o-animation: fadein 1s;
+    animation: fadein 1s;
+}
+
+div.nought{
+    width: 65px;
+    height: 65px;
     border: 5px solid white;
     border-radius: 50%;
     top: 7%;
     left: 7%;
 }
 
-#game-mat div.cross{
+div.cross{
     top: 48%;
-    left: 5%;
-    width: 100%;
+    left: 8%;
+    width: 85px;            
 }
 
-#game-mat div.cross:before{
+div.cross:before{
     transform: rotate(-45deg);
 }
 
-#game-mat div.cross:after{
+div.cross:after{
     transform: rotate(45deg);
 }
 
-#game-mat div.cross:before, #game-mat div.cross:after{
+div.cross:before, div.cross:after{
     display: block;
     left: -10%;
     position: absolute;
     width: 100%;
     border: 3px solid white;
     content: "";
+}
+
+#background{
+    opacity: 0.4;
+    background-color:black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+#menu{
+    width: 300px;
+    height: 150px;
+    background: white;
+}
+
+#menu .menu-button {
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+}
+
+#menu .menu-button:hover{
+    background: red;
+}
+
+#menu .menu-button:active{
+    background: blue;
+}
+
+#menu div.nought, #menu div.cross{
+    position: relative;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
