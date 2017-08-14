@@ -13,6 +13,12 @@ $()
         EMPTY: 2
     };
 
+    let difficultyLevels = {
+        BEATABLE: 3,
+        IMPOSSIBLE: Infinity
+    }
+    let difficulty = difficultyLevels.BEATABLE;
+
     let humanPlayer = boardMarkers.NOUGHT;
     let currentTurn = humanPlayer;
 
@@ -44,7 +50,7 @@ $()
     {
         if(IsCellEmpty(cell, gameBoard))
         {
-            var moveMarkerClass = (currentTurn == boardMarkers.NOUGHT) ? "nought" : "cross"; 
+            let moveMarkerClass = (currentTurn == boardMarkers.NOUGHT) ? "nought" : "cross"; 
             $("#game-mat > div:eq(" + cell + ")").append("<div class=" + moveMarkerClass  + "></div");
             gameBoard[cell] = currentTurn;
             currentTurn = !currentTurn;
@@ -106,6 +112,10 @@ $()
         else if(IsGameDraw(gameBoardCopy))
         {
             return 0;
+        }
+        else if(depth > difficulty)
+        {
+            return depth - difficulty;
         }
         else
         {
