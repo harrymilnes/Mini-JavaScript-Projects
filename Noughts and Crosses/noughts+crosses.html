@@ -6,21 +6,23 @@
         <link href="css/stylesheet.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div id="game-mat">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="scores-container">
-            <p>Player: <span id="player-wins"></p>
-            <p>Draws: <span id="draws"></p>
-            <p>CPU: <span id="cpu-wins"></p>
+        <div class="game-container">
+            <div id="game-mat">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="game-scores">
+                <p>Player: <span id="player-wins">0</span></p>
+                <p>Ties: <span id="draws">0</span></p>
+                <p>CPU: <span id="cpu-wins">0</span></p>
+            </div>
         </div>
         <script type="text/javascript" src="scripts/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="scripts/lodash.min.js"></script>

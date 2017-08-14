@@ -4,11 +4,31 @@ body
     margin: 0;
 }
 
-#game-mat
+.game-container
 {
     margin: auto;
     margin-top: 5em;
     width: 270px;
+}
+
+#game-mat{
+    width: 270px;
+    height: 270px;
+}
+
+.game-scores{
+    margin-top: 10px;
+    font-size: 0;
+    text-align: center;
+}
+
+.game-scores p{
+    display: inline-block;
+    width: calc((270px/3) - 10px);
+    font-size: 15px;
+    color:white;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
 #game-mat > div
