@@ -17,7 +17,7 @@ $()
         BEATABLE: 3,
         IMPOSSIBLE: Infinity
     }
-    let difficulty = difficultyLevels.BEATABLE;
+    let currentDifficulty = difficultyLevels.IMPOSSIBLE;
 
     let humanPlayer = boardMarkers.NOUGHT;
     let currentTurn = humanPlayer;
@@ -40,11 +40,6 @@ $()
     let gameBoard = [ boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY,
                       boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY,
                       boardMarkers.EMPTY, boardMarkers.EMPTY, boardMarkers.EMPTY ];
-
-    $("#game-mat > div").on('click touch', function() 
-    {
-       MakeMove($(this).index());
-    });
 
     function MakeMove(cell)
     {
@@ -87,13 +82,6 @@ $()
         return true;
     }
 
-    function UpdateScoreUI()
-    {
-        $('#player-wins').text(scoreBoard.PlayerWins);
-        $('#draws').text(scoreBoard.Draws);
-        $('#cpu-wins').text(scoreBoard.CPUWins);
-    }
-
     function AIMove()
     {
         return MakeMove(Minimax(gameBoard, 0, currentTurn));
@@ -109,13 +97,9 @@ $()
         {
             return 10 - depth;
         }
-        else if(IsGameDraw(gameBoardCopy))
+        else if(IsGameDraw(gameBoardCopy) || depth > currentDifficulty)
         {
             return 0;
-        }
-        else if(depth > difficulty)
-        {
-            return depth - difficulty;
         }
         else
         {
@@ -184,4 +168,36 @@ $()
             gameBoard[c] = boardMarkers.EMPTY;
         }
     }
+
+    function HideUI()
+    {
+        $("#background").hide();
+        $("#menu").hide();
+    }
+
+    function UpdateScoreUI()
+    {
+        $('#player-wins').text(scoreBoard.PlayerWins);
+        $('#draws').text(scoreBoard.Draws);
+        $('#cpu-wins').text(scoreBoard.CPUWins);
+    }
+
+    $("#game-mat > div").on('click touch', function() 
+    {
+       MakeMove($(this).index());
+    });
+
+    $("#spawn-nought").on('click touch', function() 
+    {
+        humanPlayer = boardMarkers.NOUGHT;
+        currentTurn = humanPlayer;
+        HideUI();
+    });
+
+    $("#spawn-cross").on('click touch', function() 
+    {
+        humanPlayer = boardMarkers.CROSS;
+        currentTurn = humanPlayer;
+        HideUI();
+    });
 }
