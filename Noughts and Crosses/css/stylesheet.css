@@ -7,6 +7,7 @@ body
 #game-mat{
     width: 270px;
     height: 270px;
+    user-select: none;
 }
 
 .game-scores{
@@ -45,7 +46,7 @@ body
     transition: border 1s ease-in;
 }
 
-#game-mat > div:hover, .menu-button:hover
+#game-mat > div:hover, .menu-button:hover, #status-restart:hover
 {
    background: #789098;
 }
@@ -118,7 +119,7 @@ div.cross:before, div.cross:after{
     position: absolute;
 }
 
-#menu
+.menu
 {
     width: 300px;
     background: hsla(195, 15%, 41%, 0.8);
@@ -130,7 +131,7 @@ div.cross:before, div.cross:after{
     user-select: none;
 }
 
-#menu .menu-button {
+.menu .menu-button {
     display: inline-block;
     width: 90px;
     height: 90px;
@@ -140,18 +141,38 @@ div.cross:before, div.cross:after{
     cursor: pointer;
 }
 
-#menu input[type="checkbox"]
+.menu input[type="checkbox"]
 {
     width: 25px;
     height: 25px;
 }
 
-#menu label{
+.menu label{
     font-size: 35px;
 }
 
-#menu div.nought, #menu div.cross{
+.menu div.nought, .menu div.cross{
     position: relative;
+}
+
+#gamestatus{
+    display: none;
+    padding: 15px 0 15px 0;
+    box-sizing: border-box;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#gamestatus #message{
+    font-size: 30px;
+}
+
+#gamestatus #status-restart{
+    height: 50px;
+    vertical-align: middle;
+    line-height: 50px;
+    width: 200px;
+    margin: auto;
 }
 
 @keyframes fadein {

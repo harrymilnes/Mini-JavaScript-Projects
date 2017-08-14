@@ -60,17 +60,17 @@ $()
     {
         if(DoesPlayerWin(humanPlayer, board))
         {
-            alert("You Win.");
+            $("#message").text("You Win!");
             scoreBoard.PlayerWins++;
         }
         else if(DoesPlayerWin(!humanPlayer, board))
         {
-            alert("You Lose.");
+            $("#message").text("You Lose!");
             scoreBoard.CPUWins++;
         }
         else if (IsGameDraw(board))
         {
-            alert("It's a draw.");
+            $("#message").text("Draw!");
             scoreBoard.Draws++;
         }
         else
@@ -78,6 +78,7 @@ $()
             return false;
         }
 
+        DisplayGameStatusUI(true);
         UpdateScoreUI();
         return true;
     }
@@ -171,7 +172,7 @@ $()
     function HideUI()
     {
         $("#background").hide();
-        $("#menu").hide();
+        $(".menu").hide();
     }
 
     function UpdateScoreUI()
@@ -181,12 +182,32 @@ $()
         $('#cpu-wins').text(scoreBoard.CPUWins);
     }
 
+    function DisplayGameStatusUI(toggle)
+    {
+        if(toggle)
+        {
+            $("#background").show();
+            $("#gamestatus").show(); 
+        }
+        else{
+            $("#background").hide();
+            $("#gamestatus").hide(); 
+        }
+    }
+
     $("#game-mat > div").on('click touch', function() 
     {
-       MakeMove($(this).index());
+        MakeMove($(this).index());
     });
 
-    $("#menu .menu-button").on('click touch', function() 
+    $("#gamestatus #status-restart").on('click touch', function() 
+    {
+        ResetGameBoard();
+        DisplayGameStatusUI(false);
+        $("#game-mat > div").removeClass().empty();
+    });
+
+    $(".menu .menu-button").on('click touch', function() 
     {
         humanPlayer = $(this).attr('id') == "spawn-nought" ? boardMarkers.NOUGHT : boardMarkers.CROSS;
         currentTurn = humanPlayer;
