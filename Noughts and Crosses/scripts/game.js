@@ -11,7 +11,7 @@ $()
         NOUGHT: 0,
         CROSS: 1,
         EMPTY: 2
-    };
+    }
     let humanPlayer;
     let currentTurn;
 
@@ -167,6 +167,9 @@ $()
         {
             gameBoard[c] = boardMarkers.EMPTY;
         }
+
+        currentTurn = humanPlayer;
+        $("#game-mat > div").removeClass().empty();
     }
 
     function HideUI()
@@ -195,7 +198,7 @@ $()
         }
     }
 
-    $("#game-mat > div").on('click touch', function() 
+    $("#game-mat div").on('click touch', function() 
     {
         MakeMove($(this).index());
     });
@@ -204,7 +207,6 @@ $()
     {
         ResetGameBoard();
         DisplayGameStatusUI(false);
-        $("#game-mat > div").removeClass().empty();
     });
 
     $(".menu .menu-button").on('click touch', function() 
