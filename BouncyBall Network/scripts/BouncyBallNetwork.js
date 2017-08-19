@@ -76,12 +76,12 @@ function bouncyBall(spawnX, spawnY)
         this.spawnY = spawnY;
         this.wasSpawnedByClick = true;
     } else {
-        this.spawnX = Math.floor(Math.random() * (ballCanvas.canvas.width));
-        this.spawnY = Math.floor(Math.random() * (ballCanvas.canvas.height));
+        this.spawnX = generateDecimalBetween(0, ballCanvas.canvas.width);
+        this.spawnY = generateDecimalBetween(0, ballCanvas.canvas.height);
     }
 
-    this.speedX = Math.random() * generateDecimalBetween(-2.25, 2.25);
-    this.speedY = Math.random() * generateDecimalBetween(-2.25, 2.25);
+    this.speedX = generateDecimalBetween(-2.25, 2.25);
+    this.speedY = generateDecimalBetween(-2.25, 2.25);
     this.size = generateDecimalBetween(0.75, 2);
     ballCanvas.bouncyBallList.push(this);
 }

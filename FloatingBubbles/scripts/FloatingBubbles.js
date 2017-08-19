@@ -7,11 +7,12 @@ class bubble
         this.randomise();
     }
 
-    generateDecimalBetween(min, max) {
+    generateDecimalBetween(min, max) 
+    {
         return (Math.random() * (min - max) + max).toFixed(2);
-    };
+    }
 
-    update()
+    update() 
     {
         this.posX = this.posX - this.movementX;
         this.posY = this.posY - this.movementY;
@@ -50,7 +51,6 @@ class background
     animate()
     {
         let self = this;
-
         self.ctx.clearRect(0, 0, self.canvas.width,  self.canvas.height);
         self.bubblesList.forEach(function (bubble)
         {
@@ -66,17 +66,23 @@ class background
         requestAnimationFrame(this.animate.bind(this));
     }
 
-    addBubble(bubble) {
+    addBubble(bubble) 
+    {
         return this.bubblesList.push(bubble);
     }
 
     generateBubbles()
     {
         let self = this;
-        for(let i = 0; i < 100; i++) 
+        for(let i = 0; i < self.bubbleDensity(); i++) 
         {
             self.addBubble(new bubble(self.canvas.width, self.canvas.height));
         }
+    }
+
+    bubbleDensity()
+    {
+        return Math.sqrt((this.canvas.height, this.canvas.width) * 5);
     }
 }
 
