@@ -126,10 +126,19 @@ window.addEventListener('resize', function(event) {
 });
 
 document.addEventListener('click', function(evt) {
-    for (var i = 0; i < 5; i++) {
-        new bouncyBall(evt.x, evt.y);
-    }
+    spawnBallsFromClick(evt.x, evt.y);
 }, false);
+
+document.addEventListener("touchstart", function(evt) {
+    spawnBallsFromClick(evt.touches[0].pageX, evt.touches[0].pageY);
+}, false);
+
+function spawnBallsFromClick(x, y)
+{
+    for (var i = 0; i < 5; i++) {
+        new bouncyBall(x,  y);
+    }
+}
 
 window.requestAnimFrame = (function() {
     return  window.requestAnimationFrame || 
