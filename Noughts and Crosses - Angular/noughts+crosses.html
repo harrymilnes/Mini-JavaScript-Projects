@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html ng-app="root">
+    <head>
+        <title>Noughts and Crosses</title>
+        <meta name="author" content="Harry Milnes">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="css/stylesheet.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+    </head>
+    <body ng-controller="game">
+        <div id="background" ng-show="selectionMenuIsOpen || showGameEndUI" ng-cloak></div>
+        <div class="menu center" ng-show="selectionMenuIsOpen">
+            <p>Select between X or O.</p>
+            <div>
+                <div class="menu-button" id="spawn-nought" ng-click="selectPlayer(0)">
+                    <div class="nought"></div>
+                </div>
+                <div class="menu-button" id="spawn-cross" ng-click="selectPlayer(1)">
+                    <div class="cross"></div>
+                </div>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" id="spawn-difficulty" value="Impossible" ng-model="impossibleModeToggled">
+                    Impossible?
+                </label>
+            </div>
+        </div>
+
+        <div id="gamestatus" class="menu center" ng-show="showGameEndUI" ng-cloak> 
+            <p id="message">{{gameEndReason}}</p>
+            <div id="status-restart" ng-click="resetGameBoard()">Restart</div>
+        </div>
+
+        <div class="game-container center">
+            <div id="game-mat">
+                <div ng-repeat="cell in gameBoard" ng-click="selectGameBoardCell()">
+			<div class="{{cell.value}}"></div>
+		</div>
+            </div>
+            <div class="game-scores">
+                <p>Player: {{playerScore}}</p>
+                <p>Ties: {{totalTies}}</p>
+                <p>CPU: {{cpuScore}}</p>
+            </div>
+        </div>
+        <script type="text/javascript" src="scripts/angular.min.js"></script>
+        <script type="text/javascript" src="scripts/angularEngine.js"></script>
+        <script type="text/javascript" src="scripts/lodash.min.js"></script>
+    </body>
+</html>
