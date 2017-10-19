@@ -25,8 +25,9 @@ Puck.prototype.checkBoundary = function()
 
 Puck.prototype.serve = function(direction)
 {
-    this.xPos = gameCore.ctx.width/2 - this.size/2;
     this.ballSpeedConst = 5;
+    this.xPos = gameCore.ctx.width/2 - this.size/2;
+
     if(direction == null)
         direction = (generateRandomBit()) ? GameDirection.LEFT : GameDirection.RIGHT;
 
@@ -42,13 +43,13 @@ Puck.prototype.serve = function(direction)
     if(generateRandomBit() == 0)
     {
         this.yPos = this.size;
-        this.yVel = (generateRandomBit()) ? this.ballSpeedConst : this.ballSpeedConst * 1;
     }
     else
     {
         this.yPos = (gameCore.canvas.height - this.size);
-        this.yVel = (generateRandomBit()) ? this.ballSpeedConst : this.ballSpeedConst * 1;
     }
+  
+    this.yVel = (generateRandomBit()) ? this.ballSpeedConst : this.ballSpeedConst;
 }
 
 Puck.prototype.update = function()
